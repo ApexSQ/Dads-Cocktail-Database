@@ -11,6 +11,8 @@
     font-size: 16px;
     line-height: 1.5;
     background-color: #f8f8f8;
+    justify-content: center; /* center items horizontally */
+    align-items: center; /* center items vertically */
   }
   
   a {
@@ -27,6 +29,8 @@
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 1rem;
+    justify-content: center; /* center items horizontally */
+    align-items: center; /* center items vertically */
   }
   
   header h1 {
@@ -34,6 +38,7 @@
     color: #007bff;
     justify-content: center; /* center items horizontally */
     align-items: center; /* center items vertically */
+    
   }
   
   /* Navigation styles */
@@ -87,4 +92,65 @@
     text-align: center;
     font-size: 0.9rem;
     color: #444;
+  }
+
+.search-bar {
+  display: flex;
+  margin: 20px 0;
+}
+
+.search-bar input[type="text"] {
+  flex-grow: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #ccccccee;
+  border-radius: 5px 0 0 5px;
+}
+
+.search-bar button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #333333;
+  color: #ffffff;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+}
+
+.search-results {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cocktail {
+  width: 50%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.cocktail h2 {
+  margin-top: 0;
+}
+
+.cocktail img {
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 10px;
+}
+
+.cocktail p {
+  margin: 0;
+  font-size: 16px;
+}
+
+#dad-joke {
+    
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    padding: 1rem;
+    border: 2px solid rgb(0, 68, 255);
+    border-radius: 5px;
+    background-color: #d9f6ff;
+    text-align: center;
+    color: white;
   }

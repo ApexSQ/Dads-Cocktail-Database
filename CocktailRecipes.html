@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dads Cocktail Database</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header>
+      <h1>Dads Cocktail Database</h1>
+    </header>
+    
+    <nav>
+      <ul>
+        <li><a href="Main.html">Home</a></li>
+      </ul>
+    </nav>
+    
+    <main>
+      <div class="search">
+        <form id="search-cocktails">
+          <label for="search-cocktails-query">Search for a cocktail by name:</label>
+          <input type="text" id="search-cocktails-query" name="query" placeholder="Enter a cocktail name">
+          <button type="submit">Search</button>
+        </form>
+        <form id="search-ingredients">
+          <label for="search-ingredients-query">Search for cocktails by ingredient:</label>
+          <input type="text" id="search-ingredients-query" name="query" placeholder="Enter an ingredient name">
+          <button type="submit">Search</button>
+        </form>
+      </div>
+      
+      <div id="results"></div>
+    </main>
+    
+    <footer>
+      <p>&copy; 2023 Dads Cocktail Database</p>
+    </footer>
+
+    <script>
+      const searchCocktailsForm = document.querySelector('#search-cocktails');
+      const searchCocktailsInput = document.querySelector('#search-cocktails-query');
+      const searchIngredientsForm = document.querySelector('#search-ingredients');
+      const searchIngredientsInput = document.querySelector('#search-ingredients-query');
+      const resultsContainer = document.getElementById('results');
+
+      searchCocktailsForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const searchTerm = searchCocktailsInput.value;
+        searchCocktails(searchTerm);
+      });
+
+      searchIngredientsForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const searchTerm = searchIngredientsInput.value;
+        searchIngredients(searchTerm);
+      });
+
+      function searchCocktails(searchTerm) {
+        fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchTerm}`)
+          .then(response => response.json())
+          .then(data => {
+            const cocktails = data.drinks;
+            resultsContainer.innerHTML = '';
+            if (cocktails) {
+              cocktails.forEach(cocktail => {
+                const cocktailName = cocktail.strDrink;
+                const cocktailImg = cocktail.strDrinkThumb;
+                const cocktailInstructions = cocktail.strInstructions;
+                const cocktailEl = `
+                  <div class="cocktail">
+                    <h2>${cocktailName}</h2>
+                    <img src="${cocktailImg}" alt="${cocktailName}">
+                    <p>${cocktailInstructions}</p>
+                  </div>
+                `;
+                resultsContainer.insertAdjacentHTML('beforeend', cocktailEl);
+              });
+            } else {
+              resultsContainer.innerHTML = 'No cocktails found.';
+            }
+          })
+          .catch(error => {
+            console.error(error);
+            resultsContainer.innerHTML = 'An error occurred while searching for cocktails.';
+          });
+      }
+
+      function searchIngredients(searchTerm) {
+  resultsContainer.innerHTML = '';
+  fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${searchTerm}`)
+    .then(response => response.json())
+    .then(data => {
+      const cocktailIds = data.drinks.map(drink => drink.idDrink);
+      if (cocktailIds.length > 0) {
+        Promise.all(cocktailIds.map(id => {
+          return fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`)
+            .then(response => response.json())
+            .then(data => {
+              const cocktail = data.drinks[0];
+              const cocktailName = cocktail.strDrink;
+              const cocktailImg = cocktail.strDrinkThumb;
+              const cocktailInstructions = cocktail.strInstructions;
+              const cocktailEl = `
+                <div class="cocktail">
+                  <h2>${cocktailName}</h2>
+                  <img src="${cocktailImg}" alt="${cocktailName}">
+                  <p>${cocktailInstructions}</p>
+                </div>
+              `;
+              resultsContainer.insertAdjacentHTML('beforeend', cocktailEl);
+            });
+        }))
+        .catch(error => {
+          console.error(error);
+          resultsContainer.innerHTML = 'An error occurred while searching for cocktails.';
+        });
+      } else {
+        resultsContainer.innerHTML = 'No cocktails found.';
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      resultsContainer.innerHTML = 'An error occurred while searching for cocktails.';
+    });
+}
+
+
+    </script>
+  </body>
+</html>

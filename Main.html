@@ -20,10 +20,26 @@
       <h2>Welcome to Dads Cocktail Database</h2>
       <p>At Dads Cocktail Database, we share a passion for creating and enjoying delicious cocktails. Our goal is to provide you with a wide variety of cocktail recipes that are easy to make and taste amazing. Whether you're looking for a classic cocktail or something new and exciting, you'll find it here.</p>
       <p>So, grab your shaker and let's get started!</p>
+      <div id="dad-joke"></div>
     </main>
     
     <footer>
       <p>&copy; 2023 Dads Cocktail Database</p>
     </footer>
+
+    <script>
+      const dadJokeEl = document.getElementById('dad-joke');
+      
+      fetch('https://icanhazdadjoke.com/', {
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        dadJokeEl.innerHTML = `<p>${data.joke}</p>`;
+      })
+      .catch(error => console.error(error));
+    </script>
   </body>
 </html>
